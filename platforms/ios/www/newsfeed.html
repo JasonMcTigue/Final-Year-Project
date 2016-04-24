@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+       <!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        
+        <link rel="stylesheet" href="js/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="js/onsenui/css/onsen-css-components.css">
+        <link rel="stylesheet" href="css/appstyle.css">
+        <link rel="stylesheet" href="css/slidingmenu.css">
+        
+        <script src="js/onsenui/js/angular/angular.js"></script>
+        <script src="js/onsenui/js/onsenui.js"></script>
+        
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+       
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+           
+        </script>
+        
+        
+        
+    </head>
+    
+        <!--Default Script tags -->
+        
+        
+<!-- =======================================================-->   
+        
+ <!-- =======================================================-->      
+ 
+        
+       
+        
+         <script type='text/javascript' >
+    
+       
+        
+            (function ($) {
+            $.extend({
+                Feed: function (url, fnk, num, key) {
+                    if (url == null) {
+                        return false;
+                    }
+                    var gurl = "http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=" + url;
+                    if (num != null) {
+                        gurl += "&num=" + num;
+                    }
+                    if (key != null) {
+                        gurl += "&key=" + key;
+                    }
+                    $.getJSON(gurl, function (data) {
+                        if (typeof fnk == "function") {
+                            fnk.call(this, data.responseData.feed);
+
+                        } else {
+                            return false;
+
+                        }
+
+                    });
+                }
+            });
+        })(jQuery);
+
+
+
+        $(window).ready(function () {
+            $.Feed('http://www.rte.ie/news/rss/news.xml',//Rss feed that you want to use
+                     function (feeds) {
+                         console.log(JSON.stringify(feeds));//converts the feed to JSON format
+                         if (!feeds) {
+                             alert('Trouble getting RSS feed :(');
+                             return false; //if the feed is not found display this message
+                         }
+                
+                //The feed is parsed through a for loop and is displayed via the appointed tags
+                        for (var i = 0; i < feeds.entries.length; i++){
+                             var entry = feeds.entries[i];
+                             $('#feedDisplay').append(/*'<a href="'+entry.link+'">*/'<div><b>'+entry.title+'</b></div><div><i><u>'+new Date(entry.publishedDate)+'<br></i></u><br>'+entry.content+'</div></a><hr>');                                   
+                        }
+            }, 20);//The amount of feeds to be displayed
+        });
+
+        
+             //The page reload function
+             function reload() {
+                    location.reload();
+                                }
+    
+             function refresh() {
+                                setTimeout(function () {
+                                    location.reload()
+                                }, 100);
+                            }
+</script> 
+          <!-- =======================================================-->     
+        
+    
+        <script>
+    //Javascript code used for the sliding side menu
+      ons.bootstrap();
+            
+      ons.ready(function() {
+        menu.openMenuMenu();
+      });
+    </script>
+        
+        
+    <script>
+    function vibrateOnce(){
+ navigator.vibrate(3000);
+}
+function vibrateSeries(){
+ navigator.vibrate([3000,1000,2000]);
+}
+    
+    </script>>
+        
+          
+    <body>
+        
+    <!--Sliding menu-->
+     <ons-sliding-menu main-page="page.html" menu-page="menu.html" max-slide-distance="260px" type="push" var="menu">
+    </ons-sliding-menu>
+
+    <ons-template id="page.html">
+      <ons-page>
+        <ons-toolbar>
+          <div class="left">
+            <ons-toolbar-button ng-click="menu.toggleMenu()">
+              <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+            </ons-toolbar-button>
+          </div>
+            
+            <!--header-->
+          <div class="center"><img src="img/TG4.png" alt="TG4" width="100"  height="30" align="center" onclick="window.location.href='newsfeed.html'"></div>
+                 
+        </ons-toolbar>
+         
+    <ons-pull-hook ng-action="load($done)" var="loader">
+              
+        <span ng-switch="loader.getCurrentState()">
+          <span ng-switch-when="initial"><ons-icon size="35px" icon="ion-arrow-down-a"></ons-icon> Pull down to refresh</span>
+            
+          <span ng-switch-when="refresh();"><ons-icon size="35px" icon="ion-arrow-up-a" ></ons-icon> Release to rexfresh</span>
+            
+          <span ng-switch-when="action"><ons-icon size="35px" spin="true" icon="ion-ios-loop-strong" onclick="refresh();" ></ons-icon> Tap To Refresh</span>
+        </span>
+    </ons-pull-hook>
+          
+   
+          
+          
+               <!--<input type="submit" value="refresh" data-wrapper-class="custom-btn" data-corners="false" id="submit" onclick="refresh();">
+                -->
+          
+        <!--Header for different menus-->
+    <div class="tab-bar tab-bar--top tab-bar--top-border">
+      <label class="tab-bar__item tab-bar--top-border__item">
+        <input type="radio" name="top-tab-bar-b" onclick="window.location.href='index.html'" onclick= "vibrateOnce()">
+        <button class="tab-bar__button tab-bar--top-border__button">
+          Nuacht
+        </button>
+      </label>
+
+      <label class="tab-bar__item tab-bar--top-border__item">
+        <input type="radio" name="top-tab-bar-b" checked="checked" >
+        <button class="tab-bar__button tab-bar--top-border__button">
+          News
+        </button>
+      </label>
+             
+      <label class="tab-bar__item tab-bar--top-border__item">
+        <input type="radio" name="top-tab-bar-b" onclick="window.location.href='sports.html'" onclick="vibrateOnce()" >
+        <button class="tab-bar__button tab-bar--top-border__button" >
+          Sport
+        </button>
+      </label>
+</div>
+
+<!--===========================RSS FEED DIV=============================-->
+                    <div id="feedDisplay"> <div></div></div>
+<!--=============================RSS FEED DIV===========================-->
+
+          
+<!--=============================Side Menu===========================-->
+        
+      </ons-page>
+    </ons-template>
+
+    <ons-template id="menu.html">
+      <ons-page modifier="menu-page">
+        <ons-toolbar modifier="transparent">
+          <div class="right">
+            <ons-toolbar-button class="menu-closeMenu" ng-click="menu.closeMenu()">
+             
+            </ons-toolbar-button>
+          </div>
+        </ons-toolbar>
+
+<ons-list class="menu-list">
+          
+      <ons-list-item class="menu-item" ng-click="menu.closeMenu()">
+        <ons-icon icon="fa-twitter" onClick="window.open('https://twitter.com/TG4TV?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor','_blank','location=yes');return false;"> Twitter </ons-icon>
+      </ons-list-item>
+            
+        <ons-list-item class="menu-item" ng-click="menu.closeMenu()">
+            <ons-icon icon="ion-social-facebook" onClick="window.open('https://www.facebook.com/TG4TV','_blank','location=yes');return false;"> Facebook </ons-icon>
+        </ons-list-item>
+            
+        <ons-list-item class="menu-item" ng-click="menu.closeMenu()">
+            <ons-icon icon="ion-social-instagram-outline" onClick="window.open('https://www.instagram.com/tg4tv/?hl=en','_blank','location=yes');return false;"> Instagram </ons-icon>
+        </ons-list-item>
+            
+        <ons-list-item class="menu-item" ng-click="menu.closeMenu()">
+            <ons-icon icon="fa-twitter" onClick="window.open('https://twitter.com/GAA_BEO','_blank','location=yes');return false;"> Sport </ons-icon>
+        </ons-list-item>
+             
+</ons-list>
+<!--=============================Side Menu===========================-->
+
+        
+        
+    
+
+
+
+      </ons-page>
+    </ons-template>
+ 
+        
+    </body>
+</html>
